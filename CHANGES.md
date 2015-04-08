@@ -1,10 +1,15 @@
 ## Master [UNPUBLISHED]
 
+New languages:
+
+- *Pony* by [Sylvan Clebsch][]
+
 New Styles:
 
 - *Atelier Cave*, *Atelier Estuary*, *Atelier Plateau* and *Atelier Savanna* and  by [Bram de Haan][]
 
 [Bram de Haan]: https://github.com/atelierbram
+[Sylvan Clebsch]: https://github.com/sylvanc/
 
 ## Version 8.5
 

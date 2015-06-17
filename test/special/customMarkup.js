@@ -1,50 +1,43 @@
 'use strict';
 
+var _       = require('lodash');
 var fs      = require('fs');
 var utility = require('../utility');
 
-var blocks;
+var handleFile = utility.handleExpectedFile;
 
 describe('custom markup', function() {
   before(function() {
-    var testHTML = document.querySelector('#custom-markup');
+    var testHTML = document.querySelectorAll('#custom-markup .hljs');
 
-    blocks = testHTML.querySelectorAll('.hljs');
+    this.blocks = _.map(testHTML, 'innerHTML');
   });
 
-  it('should replace tabs', function() {
+  it('should replace tabs', function(done) {
     var filename = utility.buildPath('expect', 'tabreplace.txt'),
+        actual   = this.blocks[0];
 
-        expected = fs.readFileSync(filename, 'utf-8'),
-        actual   = blocks[0].innerHTML;
-
-    actual.should.equal(expected);
+    fs.readFile(filename, 'utf-8', handleFile(actual, done));
   });
 
-  it('should keep custom markup', function() {
+  it('should keep custom markup', function(done) {
     var filename = utility.buildPath('expect', 'custommarkup.txt'),
+        actual   = this.blocks[1];
 
-        expected = fs.readFileSync(filename, 'utf-8'),
-        actual   = blocks[1].innerHTML;
-
-    actual.should.equal(expected);
+    fs.readFile(filename, 'utf-8', handleFile(actual, done));
   });
 
-  it('should keep custom markup and replace tabs', function() {
+  it('should keep custom markup and replace tabs', function(done) {
     var filename = utility.buildPath('expect', 'customtabreplace.txt'),
+        actual   = this.blocks[2];
 
-        expected = fs.readFileSync(filename, 'utf-8'),
-        actual   = blocks[2].innerHTML;
-
-    actual.should.equal(expected);
+    fs.readFile(filename, 'utf-8', handleFile(actual, done));
   });
 
-  it('should keep the same amount of void elements (<br>, <hr>, ...)', function() {
+  it('should keep the same amount of void elements (<br>, <hr>, ...)', function(done) {
     var filename = utility.buildPath('expect', 'brInPre.txt'),
+        actual   = this.blocks[3];
 
-        expected = fs.readFileSync(filename, 'utf-8'),
-        actual   = blocks[3].innerHTML;
-
-    actual.should.equal(expected);
+    fs.readFile(filename, 'utf-8', handleFile(actual, done));
   });
 });

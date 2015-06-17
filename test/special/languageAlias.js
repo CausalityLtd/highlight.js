@@ -1,23 +1,21 @@
 'use strict';
 
+var _       = require('lodash');
 var fs      = require('fs');
 var utility = require('../utility');
 
-var blocks;
-
 describe('language alias', function() {
   before(function() {
-    var testHTML = document.querySelector('#language-alias');
+    var testHTML = document.querySelectorAll('#language-alias .hljs');
 
-    blocks = testHTML.querySelectorAll('.hljs');
+    this.blocks = _.map(testHTML, 'innerHTML');
   });
 
-  it('should highlight as aliased language', function() {
+  it('should highlight as aliased language', function(done) {
     var filename = utility.buildPath('expect', 'languagealias.txt'),
+        actual   = this.blocks[0];
 
-        expected = fs.readFileSync(filename, 'utf-8'),
-        actual   = blocks[0].innerHTML;
-
-    actual.should.equal(expected);
+    fs.readFile(filename, 'utf-8',
+                utility.handleExpectedFile(actual, done));
   });
 });

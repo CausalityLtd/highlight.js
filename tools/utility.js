@@ -1,6 +1,7 @@
 'use strict';
 
 var _    = require('lodash');
+var glob = require('glob');
 var path = require('path');
 
 var REPLACES,
@@ -71,6 +72,10 @@ function replaceClassNames(match) {
   return REPLACES[match];
 }
 
+// All meta data, for each language definition, it store within the headers
+// of each file in `src/languages`. `parseHeader` extracts that data and
+// turns it into a useful object -- mainly for categories and what language
+// this definition requires.
 function parseHeader(content) {
   var headers,
       match = content.match(headerRegex);
@@ -99,41 +104,59 @@ function parseHeader(content) {
 function filterByQualifiers(blob, languages, categories) {
   if(_.isEmpty(languages) && _.isEmpty(categories)) return true;
 
-  var language       = path.basename(blob.name, '.js'),
-      fileInfo       = parseHeader(blob.result),
-      fileCategories = (fileInfo && fileInfo.Category) ? fileInfo.Category : [];
+  var language         = path.basename(blob.name, '.js'),
+      fileInfo         = parseHeader(blob.result),
+      fileCategories   = fileInfo.Category || [],
+      containsCategory = _.partial(_.contains, categories);
 
   if(!fileInfo) return false;
 
   return _.contains(languages, language) ||
-         _.any(fileCategories, function(fc) {return _.contains(categories, fc)});
+         _.any(fileCategories, containsCategory);
 }
 
+// For the filter task in `tools/tasks.js`, this function will look for
+// categories and languages specificed from the CLI.
 function buildFilterCallback(qualifiers) {
-
-  function isCategory(qualifier) {return qualifier[0] === ':'}
-
-  var languages  = _.reject(qualifiers, isCategory),
+  var isCategory = _.matchesProperty(0, ':'),
+      languages  = _.reject(qualifiers, isCategory),
       categories = _(qualifiers).filter(isCategory)
                                 .map(function(c) {return c.slice(1);})
                                 .value();
 
-  return function(blob) {
-    var basename = path.basename(blob.name);
-    return filterByQualifiers(blob, languages, categories) ||
-           basename === 'highlight.js';
-  };
+  return _.partial(filterByQualifiers, _, languages, categories);
 }
 
-function glob(pattern, encoding) {
+function globDefaults(pattern, encoding) {
   encoding = encoding || 'utf8';
 
+  // The limit option is a fix for issue #636 when the build script would
+  // EMFILE error for those systems who had a limit of open files per
+  // process.
+  //
+  // <https://github.com/isagalaev/highlight.js/issues/636>
   return { pattern: pattern, limit: 50, encoding: encoding };
+}
+
+function getStyleNames(callback) {
+  var stylesDir = 'src/styles/',
+      options   = { ignore: stylesDir + 'default.css' };
+
+  glob(stylesDir + '*.css', options, function(err, styles) {
+    callback(err, _.map(styles, function(style) {
+      var basename = path.basename(style, '.css'),
+          name     = _.startCase(basename),
+          pathName = path.relative('src', style);
+
+      return { path: pathName, name: name };
+    }));
+  });
 }
 
 module.exports = {
   buildFilterCallback: buildFilterCallback,
-  glob: glob,
+  getStyleNames: getStyleNames,
+  glob: globDefaults,
   parseHeader: parseHeader,
   regex: regex,
   replace: replace,

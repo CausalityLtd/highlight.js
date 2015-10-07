@@ -1,8 +1,11 @@
 'use strict';
 
-var _    = require('lodash');
-var glob = require('glob');
-var path = require('path');
+var _        = require('lodash');
+var bluebird = require('bluebird');
+var glob     = bluebird.promisifyAll(require('glob')).globAsync;
+var path     = require('path');
+
+var Queue = require('gear').Queue;
 
 var REPLACES,
     regex       = {},
@@ -54,7 +57,7 @@ REPLACES = {
   'illegalRe': 'iR',
   'lexemesRe': 'lR',
   'terminators': 't',
-  'terminator_end': 'tE',
+  'terminator_end': 'tE'
 };
 
 regex.replaces = new RegExp(
@@ -118,11 +121,11 @@ function filterByQualifiers(blob, languages, categories) {
 // For the filter task in `tools/tasks.js`, this function will look for
 // categories and languages specificed from the CLI.
 function buildFilterCallback(qualifiers) {
-  var isCategory = _.matchesProperty(0, ':'),
-      languages  = _.reject(qualifiers, isCategory),
-      categories = _(qualifiers).filter(isCategory)
-                                .map(function(c) {return c.slice(1);})
-                                .value();
+  var result     = _.partition(qualifiers, { 0: ':' }),
+      languages  = result[1],
+      categories = _.map(result[0], function(category) {
+                     return category.slice(1);
+                   });
 
   return _.partial(filterByQualifiers, _, languages, categories);
 }
@@ -138,18 +141,24 @@ function globDefaults(pattern, encoding) {
   return { pattern: pattern, limit: 50, encoding: encoding };
 }
 
-function getStyleNames(callback) {
+function getStyleNames() {
   var stylesDir = 'src/styles/',
       options   = { ignore: stylesDir + 'default.css' };
 
-  glob(stylesDir + '*.css', options, function(err, styles) {
-    callback(err, _.map(styles, function(style) {
+  return glob(stylesDir + '*.css', options)
+    .map(function(style) {
       var basename = path.basename(style, '.css'),
           name     = _.startCase(basename),
           pathName = path.relative('src', style);
 
       return { path: pathName, name: name };
-    }));
+    });
+}
+
+function toQueue(tasks, registry) {
+  return _.map(tasks, function(task) {
+    return new Queue({ registry: registry })
+      .tasks(task);
   });
 }
 
@@ -160,5 +169,6 @@ module.exports = {
   parseHeader: parseHeader,
   regex: regex,
   replace: replace,
-  replaceClassNames: replaceClassNames
+  replaceClassNames: replaceClassNames,
+  toQueue: toQueue
 };

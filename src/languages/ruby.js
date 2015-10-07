@@ -91,8 +91,7 @@ function(hljs) {
     },
     {
       className: 'function',
-      beginKeywords: 'def', end: ' |$|;',
-      relevance: 0,
+      beginKeywords: 'def', end: '$|;',
       contains: [
         hljs.inherit(hljs.TITLE_MODE, {begin: RUBY_METHOD_RE}),
         PARAMS
@@ -171,6 +170,7 @@ function(hljs) {
   return {
     aliases: ['rb', 'gemspec', 'podspec', 'thor', 'irb'],
     keywords: RUBY_KEYWORDS,
+    illegal: /\/\*/,
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 }

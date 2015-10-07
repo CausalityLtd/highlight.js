@@ -174,4 +174,18 @@ Contributors:
 - Jay Strybis <jay.strybis@gmail.com>
 - Guillaume Gomez <guillaume1.gomez@gmail.com>
 - Janis Voigtländer <janis.voigtlaender@gmail.com>
-- Sylvan Clebsch <sylvan@causality.io>
+- Dirk Kirsten <dk@basex.org>
+- MY Sun <simonmysun@gmail.com>
+- Vadimtro <vadimtro@yahoo.com>
+- Benjamin Auder <benjamin.auder@gmail.com>
+- Dotan Dimet <dotan@corky.net>
+- Manh Tuan <junookyo@gmail.com>
+- Philippe Charrière <ph.charriere@gmail.com>
+- Stefan Bechert <stefan.bechert@gmx.net>
+- Samuel Reed <sam@bitmex.com>
+- Yury Selivanov <yselivanov@gmail.com>
+- Tsuyusato Kitsune <make.just.on@gmail.com>
+- Mick MacCallum <micksmaccallum@gmail.com>
+- Kristoffer Gronlund <kgronlund@suse.com>
+- Søren Enevoldsen <senevoldsen90@gmail.com>
+- Daniel Rosenwasser <DanielRosenwasser@users.noreply.github.com>

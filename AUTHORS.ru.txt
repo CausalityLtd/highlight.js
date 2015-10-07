@@ -174,4 +174,18 @@ URL:   https://highlightjs.org/
 - Джей Стрибис <jay.strybis@gmail.com>
 - Гийом Гомес <guillaume1.gomez@gmail.com>
 - Янис Фойгтлэндер <janis.voigtlaender@gmail.com>
-- Сылван Клебщ <sylvan@causality.io>
+- Дирк Кирстен <dk@basex.org>
+- MY Sun <simonmysun@gmail.com>
+- Vadimtro <vadimtro@yahoo.com>
+- Бенджамин Одер <benjamin.auder@gmail.com>
+- Дотан Димет <dotan@corky.net>
+- Ман Туан <junookyo@gmail.com>
+- Филипп Шарьер <ph.charriere@gmail.com>
+- Стефан Бечерт <stefan.bechert@gmx.net>
+- Сэмюел Рид <sam@bitmex.com>
+- Юрий Селиванов <yselivanov@gmail.com>
+- Цуюсато Кицуне <make.just.on@gmail.com>
+- Мик МаКаллум <micksmaccallum@gmail.com>
+- Кристофер Гронлунд <kgronlund@suse.com>
+- Сорен Эневолдсен <senevoldsen90@gmail.com>
+- Даниэль Розенвассен <DanielRosenwasser@users.noreply.github.com>

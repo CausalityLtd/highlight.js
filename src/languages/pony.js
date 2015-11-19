@@ -18,7 +18,7 @@ function(hljs) {
 
   var CLASS = {
     className: 'class',
-    beginKeywords: 'type interface trait primitive|10 class actor|10',
+    beginKeywords: 'type interface trait primitive|10 class struct actor|10',
     end: '[\[]|is|$',
     excludeEnd: true,
     contains: [
@@ -46,7 +46,7 @@ function(hljs) {
   return {
     keywords: {
       literal: 'true false this',
-      keyword: 'var let new be fun iso|10 trn ref val box|10 tag|10 break continue return error if then elseif else end match where try with recover|10 consume|10 object while do repeat until for in lambda use as'
+      keyword: 'var let embed new be fun iso|10 trn ref val box|10 tag|10 break continue return error if then elseif else end match where try with recover|10 consume|10 object while do repeat until for in lambda use as'
     },
     contains: [
       hljs.C_LINE_COMMENT_MODE,
